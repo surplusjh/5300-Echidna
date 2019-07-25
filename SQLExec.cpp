@@ -9,6 +9,18 @@ using namespace hsql;
 
 Tables* SQLExec::tables = nullptr;
 
+QueryResult *SQLExec::create_index(const CreateStatement *statement) {
+    return new QueryResult("create index not implemented");  // FIXME
+}
+
+QueryResult *SQLExec::drop_index(const DropStatement *statement) {
+    return new QueryResult("drop index not implemented");  // FIXME
+}
+
+QueryResult *SQLExec::show_index(const ShowStatement *statement) {
+    return new QueryResult("show index not implemented");  // FIXME
+}
+
 ostream &operator<<(ostream &out, const QueryResult &qres) {
     if (qres.column_names != nullptr) {
         for (auto const &column_name: *qres.column_names)
@@ -196,17 +208,6 @@ QueryResult *SQLExec::drop_table(const DropStatement *statement) {
 }
 
 
-QueryResult *SQLExec::create_index(const CreateStatement *statement) {
-    return new QueryResult("create index not implemented");  // FIXME
-}
-
-QueryResult *SQLExec::drop_index(const DropStatement *statement) {
-    return new QueryResult("drop index not implemented");  // FIXME
-}
-
-QueryResult *SQLExec::show_index(const ShowStatement *statement) {
-    return new QueryResult("show index not implemented");  // FIXME
-}
 
 QueryResult *SQLExec::show(const ShowStatement *statement) {
     switch (statement->type) {

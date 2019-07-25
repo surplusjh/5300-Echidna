@@ -4,6 +4,11 @@ CCFLAGS     = -std=c++11 -std=c++0x -Wall -Wno-c++11-compat -DHAVE_CXX_STDHEADER
 COURSE      = /usr/local/db6
 INCLUDE_DIR = $(COURSE)/include
 LIB_DIR     = $(COURSE)/lib
+BERKELEY = /usr/local/BerkeleyDB.18.1/
+BERKELEY_INC = $(BERKELEY)/include
+BERKELEY_LIB = $(BERKELEY)/lib
+PARSER = /usr/local/sql-parser
+PARSER_INC = $(PARSER)/src
 
 # following is a list of all the compiled object files needed to build the sql5300 executable
 OBJS       = sql5300.o heap_storage.o ParseTreeToString.o SQLExec.o schema_tables.o storage_engine.o
@@ -11,7 +16,7 @@ OBJS       = sql5300.o heap_storage.o ParseTreeToString.o SQLExec.o schema_table
 # Rule for linking to create the executable
 # Note that this is the default target since it is the first non-generic one in the Makefile: $ make
 sql5300: $(OBJS)
-	g++ -L$(LIB_DIR) -o $@ $(OBJS) -ldb_cxx -lsqlparser
+	g++ -L$(BERKELEY_LIB) -o $@ $(OBJS) -ldb_cxx -lsqlparser
 
 # In addition to the general .cpp to .o rule below, we need to note any header dependencies here
 # idea here is that if any of the included header files changes, we have to recompile
@@ -27,7 +32,7 @@ storage_engine.o : storage_engine.h
 
 # General rule for compilation
 %.o: %.cpp
-	g++ -I$(INCLUDE_DIR) $(CCFLAGS) -o "$@" "$<"
+	g++ -I$(BERKELEY_INC) -I$(PARSER_INC) $(CCFLAGS) -o "$@" "$<"
 
 # Rule for removing all non-source files (so they can get rebuilt from scratch)
 # Note that since it is not the first target, you have to invoke it explicitly: $ make clean
