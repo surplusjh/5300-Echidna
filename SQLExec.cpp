@@ -155,9 +155,6 @@ QueryResult *SQLExec::create_table(const CreateStatement *statement) {
     return new QueryResult("created " + table_name);
 }
 
-QueryResult *SQLExec::create_index(const CreateStatement *statement) {
-    return new QueryResult("create index not implemented");  // FIXME
-}
 
 // DROP ...
 QueryResult *SQLExec::drop(const DropStatement *statement) {
@@ -198,8 +195,17 @@ QueryResult *SQLExec::drop_table(const DropStatement *statement) {
     return new QueryResult(string("dropped ") + table_name);
 }
 
+
+QueryResult *SQLExec::create_index(const CreateStatement *statement) {
+    return new QueryResult("create index not implemented");  // FIXME
+}
+
 QueryResult *SQLExec::drop_index(const DropStatement *statement) {
     return new QueryResult("drop index not implemented");  // FIXME
+}
+
+QueryResult *SQLExec::show_index(const ShowStatement *statement) {
+    return new QueryResult("show index not implemented");  // FIXME
 }
 
 QueryResult *SQLExec::show(const ShowStatement *statement) {
@@ -215,9 +221,7 @@ QueryResult *SQLExec::show(const ShowStatement *statement) {
     }
 }
 
-QueryResult *SQLExec::show_index(const ShowStatement *statement) {
-    return new QueryResult("show index not implemented");  // FIXME
-}
+
 
 QueryResult *SQLExec::show_tables() {
     ColumnNames* column_names = new ColumnNames;

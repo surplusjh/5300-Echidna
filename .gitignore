@@ -31,3 +31,8 @@
 *.out
 *.app
 
+# Project Files
+cmake-build-debug
+CMakeLists.txt
+
+
