@@ -1,17 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <cstring>
-#include <iostream>
-#include <string>
-#include <cassert>
-#include "db_cxx.h"
-#include "SQLParser.h"
-#include "sqlhelper.h"
 #include "heap_storage.h"
 using namespace std;
 using namespace hsql;
-
-typedef u_int16_t u16;
 
 //	Slottedpage structure is used to organize records within a block, 
 //	Records are allocated contiguously, also the free same in the block
@@ -19,18 +8,17 @@ typedef u_int16_t u16;
 
 //	Constructor for the Slottedpage class.
 //
-SlottedPage::SlottedPage(Dbt &block, BlockID block_id, bool is_new) : DbBlock(block, block_id, is_new)
-{
-	if (is_new)
-	{
-		this->num_records = 0;
-		this->end_free = DbBlock::BLOCK_SZ - 1;
-		put_header(); 
-	}
-	else
-	{
-		get_header(this->num_records, this->end_free);
-	}
+SlottedPage::SlottedPage(Dbt &block, BlockID block_id, bool is_new) {
+    if (is_new)
+    {
+        this->num_records = 0;
+        this->end_free = DbBlock::BLOCK_SZ - 1;
+        put_header();
+    }
+    else
+    {
+        get_header(this->num_records, this->end_free);
+    }
 }
 
 // Get a 2-byte integer at given offset in block.
