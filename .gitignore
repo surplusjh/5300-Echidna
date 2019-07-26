@@ -33,11 +33,11 @@
 
 # Project Files
 cmake-build-debug
-.idea
-CMakeLists.txt
-MakeFile
-*.o
-sql5300
+./.idea
+./CMakeLists.txt
+./MakeFile
+./*.o
+./sql5300
 
 
 

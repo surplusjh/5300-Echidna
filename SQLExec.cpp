@@ -71,29 +71,38 @@ QueryResult *SQLExec::drop_index(const DropStatement *statement) {
 }
 
 QueryResult *SQLExec::show_index(const ShowStatement *statement) {
-    /*
-     *  """ SHOW INDEX FROM <table> """
-    def __init__(self, parse):
-        super().__init__(parse)
-        self.table_name = parse['table_name']
-
-    def execute(self):
-        return SQLExecQuery({'table_names': ['_indices'], 'columns': '*'}).execute()
-     * */
+    //create dict of index attributes
     ColumnNames *column_names = new ColumnNames;
+
     column_names->push_back("table_name");
+    column_names->push_back("index_name");
+    column_names->push_back("column_name");
+    column_names->push_back("seq_in_index");
+    column_names->push_back("index_type");
+    column_names->push_back("is_unique");
 
-    ColumnAttributes *column_attributes = new ColumnAttributes;
-    column_attributes->push_back(ColumnAttribute(ColumnAttribute::TEXT));
+    //set the attribute type to text for display later
+    ColumnAttributes* col_attributes = new ColumnAttributes();
+    col_attributes->push_back(ColumnAttribute(ColumnAttribute::TEXT));
 
-    Handles *handles = SQLExec::tables->select();
-    u_long n = handles->size() - 2;
+    //create a where clause so that we can use it in a select statement
+    ValueDict whereClause;
 
-    ValueDicts *rows = new ValueDicts;
+    whereClause["table_name"] = Value(statement->tableName);
 
-    //code to select indexes from table here
-    return new QueryResult(column_names, column_attributes, rows,
-                           "successfully returned " + to_string(n) + " rows");  // FIXME
+    Handles* indexHandles = indices->select(&whereClause);
+    unsigned numRows = indexHandles->size();
+    ValueDicts* indexRows = new ValueDicts();
+
+    for(auto const& handle:*indexHandles){
+        ValueDict* indexStat = indices->project(handle,column_names);
+        indexRows->push_back(indexStat);
+
+    }
+    delete indexHandles;
+
+    return new QueryResult(column_names, col_attributes, indexRows,
+                           "successfully returned " + to_string(numRows) + " rows");  // FIXME
 }
 
 ostream &operator<<(ostream &out, const QueryResult &qres) {
